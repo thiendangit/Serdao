@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ListRenderItemInfo,
 } from 'react-native';
-import {useTransactions} from './TransactionContext';
+import {Transaction, useTransactions} from './TransactionContext';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from './App.tsx';
 
@@ -16,7 +16,7 @@ const HomeScreen = ({
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
   const {transactions, balance} = useTransactions();
 
-  const renderItem = ({item}: ListRenderItemInfo<any>) => (
+  const renderItem = ({item}: ListRenderItemInfo<Transaction>) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>Transaction ID: {item.id}</Text>
       <Text style={styles.itemText}>Amount: ${item.amount.toFixed(2)}</Text>
@@ -51,30 +51,29 @@ const HomeScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#fff',
     paddingTop: 20,
+    paddingHorizontal: 20,
   },
   balanceText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
   },
   item: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#f0f0f0',
     padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 5,
+    marginBottom: 10,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ddd',
   },
   itemText: {
     fontSize: 16,
+    marginBottom: 5,
   },
   listContainer: {
     flexGrow: 1,
-    width: '100%',
   },
 });
 

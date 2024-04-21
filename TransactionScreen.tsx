@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TextInput, Button} from 'react-native';
+import {View, TextInput, Button, StyleSheet, Keyboard} from 'react-native';
 import {useTransactions} from './TransactionContext';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from './App.tsx';
@@ -20,41 +20,27 @@ const TransactionScreen = ({
     navigation.goBack();
   };
 
+  const dismissKeyboard = () => {
+    Keyboard.dismiss(); // Ẩn bàn phím khi nhấn ra ngoài
+  };
+
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={styles.container} onTouchStart={dismissKeyboard}>
       <TextInput
-        style={{
-          height: 40,
-          borderColor: 'gray',
-          borderWidth: 1,
-          width: '80%',
-          marginVertical: 8,
-        }}
+        style={styles.input}
         onChangeText={setAmount}
         value={amount}
         keyboardType="numeric"
         placeholder="Enter amount"
       />
       <TextInput
-        style={{
-          height: 40,
-          borderColor: 'gray',
-          borderWidth: 1,
-          width: '80%',
-          marginVertical: 8,
-        }}
+        style={styles.input}
         onChangeText={setName}
         value={name}
         placeholder="Recipient Name"
       />
       <TextInput
-        style={{
-          height: 40,
-          borderColor: 'gray',
-          borderWidth: 1,
-          width: '80%',
-          marginVertical: 8,
-        }}
+        style={styles.input}
         onChangeText={setIban}
         value={iban}
         placeholder="Recipient IBAN"
@@ -63,5 +49,24 @@ const TransactionScreen = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f0f0f0',
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    width: '80%',
+    marginVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: '#fff',
+  },
+});
 
 export default TransactionScreen;

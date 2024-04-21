@@ -1,25 +1,28 @@
 import React, {createContext, useState, useContext} from 'react';
 
-type Account = {name: string; iban: string};
-
-type TransactionContextType = {
-  transactions?: any[];
-  addTransaction?: (amount: string, account: Account) => void;
-  balance: number;
+export type Account = {name: string; iban: string};
+export type Transaction = {
+  id: number;
+  amount: number;
+  account: Account;
 };
 
-const TransactionContext = createContext<TransactionContextType>({
-  balance: 1000,
-});
+export type TransactionContextType = {
+  transactions?: Transaction[];
+  addTransaction?: (amount: string, account: Account) => void;
+  balance?: number;
+};
+
+const TransactionContext = createContext<TransactionContextType>({});
 
 export const useTransactions = () => useContext(TransactionContext);
 
 export const TransactionProvider = ({children}: React.PropsWithChildren) => {
   const [transactions, setTransactions] = useState<any>([]);
-  const [balance, setBalance] = useState(1000);
+  const [balance, setBalance] = useState(0);
 
   const addTransaction = (amount: string, account: Account) => {
-    const newTransaction = {
+    const newTransaction: Transaction = {
       id: Date.now(),
       amount: parseFloat(amount),
       account,
