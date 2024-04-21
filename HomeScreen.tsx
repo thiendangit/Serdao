@@ -1,11 +1,22 @@
 import React from 'react';
-import {View, Text, Button, FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  FlatList,
+  StyleSheet,
+  ListRenderItemInfo,
+} from 'react-native';
 import {useTransactions} from './TransactionContext';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList} from './App.tsx';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
   const {transactions, balance} = useTransactions();
 
-  const renderItem = ({item}) => (
+  const renderItem = ({item}: ListRenderItemInfo<any>) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>Transaction ID: {item.id}</Text>
       <Text style={styles.itemText}>Amount: ${item.amount.toFixed(2)}</Text>
