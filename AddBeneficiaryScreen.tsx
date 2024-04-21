@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TextInput,
@@ -31,6 +31,14 @@ const AddBeneficiaryScreen = ({
     storage,
     [],
   );
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: 'Add beneficiary',
+    });
+  });
+
+  const isButtonDisabled = !firstName || !lastName || !iban || isLoading;
 
   const handleAddBeneficiary = async () => {
     if (!firstName || !lastName || !iban) {
@@ -97,7 +105,8 @@ const AddBeneficiaryScreen = ({
         style={[styles.input, !!ibanError && styles.errorInput]}
         onChangeText={setIban}
         value={iban}
-        placeholder="IBAN"
+        multiline
+        placeholder="IBAN Ex:GB33BUKB20201555555555,..."
       />
       {ibanError ? <Text style={styles.error}>{ibanError}</Text> : null}
       {isLoading ? (
@@ -107,7 +116,11 @@ const AddBeneficiaryScreen = ({
           color="#0000ff"
         />
       ) : (
-        <Button title="Add Beneficiary" onPress={handleAddBeneficiary} />
+        <Button
+          title="Add Beneficiary"
+          onPress={handleAddBeneficiary}
+          disabled={isButtonDisabled}
+        />
       )}
     </View>
   );
@@ -121,7 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   input: {
-    height: 40,
+    minHeight: 40,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 8,

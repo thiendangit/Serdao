@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   View,
   TextInput,
@@ -14,16 +14,31 @@ import {useTransactions} from './TransactionContext';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from './App.tsx';
 import IBAN from 'iban';
+import {useMMKVStorage} from 'react-native-mmkv-storage';
+import {storage} from './utils';
 
 const TransactionScreen = ({
   navigation,
+  route,
 }: NativeStackScreenProps<RootStackParamList, 'Transaction'>) => {
+  const beneficiary = useMemo(() => {
+    return route.params.beneficiary;
+  }, [route.params.beneficiary]);
+
   const [amount, setAmount] = useState('');
   const [name, setName] = useState('');
   const [iban, setIban] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [ibanError, setIbanError] = useState('');
   const [amountError, setAmountError] = useState('');
+
+  useEffect(() => {
+    if (beneficiary) {
+      setName(beneficiary?.lastName + ' ' + beneficiary?.firstName);
+      setIban(beneficiary?.iban || '');
+    }
+  }, [beneficiary?.chooseTime]);
+
   const {addTransaction} = useTransactions();
 
   const handleTransaction = async () => {
@@ -118,7 +133,8 @@ const TransactionScreen = ({
             setIbanError(''); // Reset error message when user edits IBAN
           }}
           value={iban}
-          placeholder="Recipient IBAN"
+          multiline
+          placeholder="IBAN Ex:GB33BUKB20201555555555,..."
         />
         {ibanError ? <Text style={styles.error}>{ibanError}</Text> : null}
         {isLoading ? (
@@ -149,7 +165,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    height: 40,
+    minHeight: 40,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 8,

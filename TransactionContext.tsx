@@ -1,4 +1,6 @@
-import React, {createContext, useState, useContext} from 'react';
+import React, {createContext, useContext} from 'react';
+import {useMMKVStorage} from 'react-native-mmkv-storage';
+import {storage} from './utils';
 
 export type Account = {name: string; iban: string};
 export type Transaction = {
@@ -18,8 +20,13 @@ const TransactionContext = createContext<TransactionContextType>({});
 export const useTransactions = () => useContext(TransactionContext);
 
 export const TransactionProvider = ({children}: React.PropsWithChildren) => {
-  const [transactions, setTransactions] = useState<any>([]);
-  const [balance, setBalance] = useState(0);
+  const [transactions, setTransactions] = useMMKVStorage<any[]>(
+    'TransactionList',
+    storage,
+    [],
+  );
+
+  const [balance, setBalance] = useMMKVStorage('Balance', storage, 0);
 
   const addTransaction = (amount: string, account: Account) => {
     const newTransaction: Transaction = {
@@ -32,6 +39,10 @@ export const TransactionProvider = ({children}: React.PropsWithChildren) => {
       newTransaction,
     ]);
     setBalance(prevBalance => prevBalance - parseFloat(amount));
+
+    setTransactions(prevValue => {
+      return [...prevValue, newTransaction];
+    });
   };
 
   return (

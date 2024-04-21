@@ -60,7 +60,9 @@ const SelectBeneficiaryScreen: React.FC<SelectBeneficiaryScreenProps> = ({
 
   const handleSelectBeneficiary = (beneficiary: Beneficiary) => {
     // Pass the selected beneficiary back to the AddTransaction screen
-    navigation.navigate('Transaction', {beneficiary});
+    navigation.navigate('Transaction', {
+      beneficiary: {...beneficiary, chooseTime: Date.now()},
+    } as {beneficiary?: (Beneficiary & {chooseTime: number}) | undefined});
   };
 
   const renderBeneficiaryItem = ({item}: {item: Beneficiary}) => (

@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import TransactionScreen from './TransactionScreen';
 import {TransactionProvider} from './TransactionContext';
-import BeneficiaryScreen from './BeneficiaryScreen.tsx';
+import BeneficiaryScreen, {Beneficiary} from './BeneficiaryScreen.tsx';
 import AddBeneficiaryScreen from './AddBeneficiaryScreen.tsx';
 
 const Stack = createNativeStackNavigator();
@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 export type RootStackParamList = {
   Home: undefined;
   Transaction: {
-    beneficiary?: any;
+    beneficiary?: Beneficiary & {chooseTime: number};
   };
   Beneficiary: {
     fromAddFlow?: boolean;
