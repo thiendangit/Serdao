@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,8 @@ import {
   FlatList,
   StyleSheet,
   ListRenderItemInfo,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import {Transaction, useTransactions} from './TransactionContext';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -15,6 +17,31 @@ const HomeScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Home'>) => {
   const {transactions, balance} = useTransactions();
+
+  const addBeneficiary = useCallback(() => {
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('Beneficiary', {
+            fromAddFlow: true,
+          })
+        }>
+        <Image
+          style={styles.icon}
+          tintColor={'#1a8be7'}
+          source={{
+            uri: 'https://cdn.mservice.com.vn/app/icon/kits/basic_person_tag.png',
+          }}
+        />
+      </TouchableOpacity>
+    );
+  }, [navigation]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: addBeneficiary,
+    });
+  }, [addBeneficiary, navigation]);
 
   const renderItem = ({item}: ListRenderItemInfo<Transaction>) => (
     <View style={styles.item}>
@@ -32,11 +59,11 @@ const HomeScreen = ({
   return (
     <View style={styles.container}>
       <Text style={styles.balanceText}>
-        Current Balance: ${balance.toFixed(2)}
+        Current Balance: ${(balance || 0).toFixed(2)}
       </Text>
       <Button
         title="Add Transaction"
-        onPress={() => navigation.navigate('Transaction')}
+        onPress={() => navigation.navigate('Transaction', {})}
       />
       <FlatList
         data={transactions}
@@ -74,6 +101,10 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flexGrow: 1,
+  },
+  icon: {
+    height: 24,
+    width: 24,
   },
 });
 
