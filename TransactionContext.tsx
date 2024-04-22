@@ -21,12 +21,12 @@ export const useTransactions = () => useContext(TransactionContext);
 
 export const TransactionProvider = ({children}: React.PropsWithChildren) => {
   const [transactions, setTransactions] = useMMKVStorage<any[]>(
-    'TransactionList',
+    'transactionList',
     storage,
     [],
   );
 
-  const [balance, setBalance] = useMMKVStorage('Balance', storage, 0);
+  const [balance, setBalance] = useMMKVStorage('balance', storage, 0);
 
   const addTransaction = (amount: string, account: Account) => {
     const newTransaction: Transaction = {
