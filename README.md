@@ -1,22 +1,52 @@
-# Introduction
+# Running the React Native Project
 
-We're thrilled to have you at this stage of our selection process! This test is designed to assess your skills and approach to problem-solving in a practical scenario. Please carefully follow the instructions below and ensure you read through the entire document. Good luck!
+## Requirements
 
-# Set up the Project
+- Node.js and npm (or Yarn) installed on your computer.
+- Your computer is set up and configured for React Native app development. You can do this by installing Android Studio or Xcode depending on the platform you want to develop for (Android or iOS).
 
-A significant challenge when working with React Native is setting up a complete environment before being able to run the project. We have intentionally omitted these instructions to assess your ability to independently set up said environment.
+## Installation
 
-# Test
+1. **Clone the repository from GitHub:**
 
-You will be working on an application that facilitates transactions to beneficiaries. To successfully complete the test, you will need to implement the following features:
- - Introduce a new page to create a beneficiary, including fields for their first name, last name, and IBAN. Additionally, incorporate an IBAN validator to ensure the IBAN's validity.
- - Enable the selection of a beneficiary from a list when making a transaction.
- - Preserve the state of the application so that upon reopening, the list of beneficiaries, transaction history, and balance are retained.
+    ```bash
+    git clone https://github.com/thiendangit/Serdao
+    ```
 
-Note: you have free rein in how you want to implement this test, give it you best shot!
+2. **Navigate into the project directory:**
 
-# Result
+    ```bash
+    cd Serdao
+    ```
 
-Please create a new Git repository to store both the test first version and your modifications. Document all the commands needed to install and launch this project, excluding the installation of any external SDKs/platforms, our focus will remain strictly on this project.
+3. **Install the dependencies:**
 
-We hope that you will enjoy taking this test, best of luck!
+    ```bash
+    # npm install
+    # or use Yarn:
+    yarn install
+    ```
+
+3. ** With ios - Pod Install:**
+
+    ```bash
+     cd ios
+    ```
+   ```bash
+    pod install
+    ```
+
+## Running the App:
+   ```bash
+   yarn start
+   ```
+
+   ```bash
+   i - run on iOS
+   a - run on Android
+   d - open Dev Menu
+   r - reload app
+   ```
+
+
+

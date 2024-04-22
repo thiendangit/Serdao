@@ -11,6 +11,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from './App';
 import {useMMKVStorage} from 'react-native-mmkv-storage';
 import {storage} from './utils';
+import {useTransactions} from './TransactionContext.tsx';
 
 export type Beneficiary = {
   id: number;
@@ -30,11 +31,7 @@ const SelectBeneficiaryScreen: React.FC<SelectBeneficiaryScreenProps> = ({
 }) => {
   const fromAddFlow = route.params.fromAddFlow;
 
-  const [beneficiaries] = useMMKVStorage<Beneficiary[]>(
-    'beneficiaries',
-    storage,
-    [],
-  );
+  const {beneficiaries} = useTransactions();
 
   const addBeneficiary = useCallback(() => {
     return (
@@ -55,8 +52,6 @@ const SelectBeneficiaryScreen: React.FC<SelectBeneficiaryScreenProps> = ({
       headerRight: addBeneficiary,
     });
   }, [addBeneficiary, navigation]);
-
-  useEffect(() => {}, []);
 
   const handleSelectBeneficiary = (beneficiary: Beneficiary) => {
     // Pass the selected beneficiary back to the AddTransaction screen

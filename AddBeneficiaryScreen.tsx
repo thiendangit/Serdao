@@ -11,9 +11,8 @@ import {
 import IBAN from 'iban';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from './App.tsx';
-import {useMMKVStorage} from 'react-native-mmkv-storage';
-import {storage} from './utils';
 import {Beneficiary} from './BeneficiaryScreen.tsx';
+import {useTransactions} from './TransactionContext.tsx';
 
 const AddBeneficiaryScreen = ({
   navigation,
@@ -26,11 +25,7 @@ const AddBeneficiaryScreen = ({
   const [lastNameError, setLastNameError] = useState('');
   const [ibanError, setIbanError] = useState('');
 
-  const [beneficiaries, setBeneficiaries] = useMMKVStorage<Beneficiary[]>(
-    'beneficiaries',
-    storage,
-    [],
-  );
+  const {beneficiaries, addBeneficiaries} = useTransactions();
 
   useEffect(() => {
     navigation.setOptions({
@@ -53,23 +48,23 @@ const AddBeneficiaryScreen = ({
       return;
     }
 
-    const isExistIndex = beneficiaries.findIndex(
+    const isExistIndex = beneficiaries?.findIndex(
       beneficiary => beneficiary.iban === iban,
     );
 
     if (isExistIndex === -1) {
       setIsLoading(true);
 
-      // add beneficiary to local storage
-      setBeneficiaries(prevValue => {
+      if (addBeneficiaries) {
+        // add beneficiary to local storage
         const newBeneficiaries: Beneficiary = {
           id: Date.now(),
           firstName,
           lastName,
           iban,
         };
-        return [...prevValue, newBeneficiaries];
-      });
+        addBeneficiaries(newBeneficiaries);
+      }
 
       setIsLoading(false);
       navigation.goBack();
